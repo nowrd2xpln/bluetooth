@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
-
+import subprocess
 import dbus
 import dbus.exceptions
 import dbus.mainloop.glib
@@ -192,11 +192,11 @@ class Control2_Characteristic(Characteristic):
 
 class Control3_Characteristic(Characteristic):
     uuid = "33333333-de5f-4168-89dd-74f04f4e5842"
-    description = b"Get/set for Control2 characteristic"
+    description = b"Get/set for Control3 characteristic"
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
-            self, bus, index, self.uuid, ["secure-read", "secure-write"], service,
+            self, bus, index, self.uuid, ["read", "write"], service,
         )
 
         self.value = []
@@ -204,10 +204,15 @@ class Control3_Characteristic(Characteristic):
 
     def ReadValue(self, options):
         logger.info("auto off read: " + repr(self.value))
+        cmd = "cat /sys/class/thermal/thermal_zone0/temp"
+        #cmd = "paste <(cat /sys/class/thermal/thermal_zone*/type) <(cat /sys/class/thermal/thermal_zone*/temp) | column -s $'\\t' -t | sed 's/\(.\)..$/.\\1\°C/'"
+                
         res = None
         try:
-            res = requests.get(VivaldiBaseUrl + "/vivaldi")
-            self.value = bytearray(struct.pack("i", int(res.json()["autoOffMinutes"])))
+            temperture = subprocess.check_output(cmd, shell=True)
+            logger.info(temperture)
+            #res = requests.get(VivaldiBaseUrl + "/vivaldi")
+            #self.value = bytearray(struct.pack("i", int(res.json()["autoOffMinutes"])))
         except Exception as e:
             logger.error(f"Error getting status {e}")
 
@@ -221,8 +226,10 @@ class Control3_Characteristic(Characteristic):
         logger.info("writing {cmd} to machine")
         data = {"cmd": "autoOffMinutes", "time": struct.unpack("i", cmd)[0]}
         try:
-            res = requests.post(VivaldiBaseUrl + "/vivaldi/cmds", json=data)
-            logger.info(res)
+            temperture = subprocess.check_output(cmd, shell=True)
+            logger.info(temperture)
+            #res = requests.post(VivaldiBaseUrl + "/vivaldi/cmds", json=data)
+            #logger.info(res)
         except Exceptions as e:
             logger.error(f"Error updating machine state: {e}")
             raise
