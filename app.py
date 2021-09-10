@@ -95,8 +95,8 @@ class Ex1_S1Service(Service):
     def __init__(self, bus, index):
         Service.__init__(self, bus, index, self.ESPRESSO_SVC_UUID, True)
         self.add_characteristic(PowerControlCharacteristic(bus, 0, self))
-        self.add_characteristic(BoilerControlCharacteristic(bus, 1, self))
-        self.add_characteristic(AutoOffCharacteristic(bus, 2, self))
+        self.add_characteristic(Control2_Characteristic(bus, 1, self))
+        self.add_characteristic(Control3_Characteristic(bus, 2, self))
 
 
 class PowerControlCharacteristic(Characteristic):
@@ -152,7 +152,7 @@ class PowerControlCharacteristic(Characteristic):
         self.value = value
 
 
-class BoilerControlCharacteristic(Characteristic):
+class Control2_Characteristic(Characteristic):
     uuid = "322e774f-c909-49c4-bd7b-48a4003a967f"
     description = b"Get/set boiler power state can be `on` or `off`"
 
@@ -190,9 +190,9 @@ class BoilerControlCharacteristic(Characteristic):
             raise
 
 
-class AutoOffCharacteristic(Characteristic):
+class Control3_Characteristic(Characteristic):
     uuid = "9c7dbce8-de5f-4168-89dd-74f04f4e5842"
-    description = b"Get/set autoff time in minutes"
+    description = b"Get/set for Control2 characteristic"
 
     def __init__(self, bus, index, service):
         Characteristic.__init__(
