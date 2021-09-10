@@ -153,7 +153,7 @@ class PowerControlCharacteristic(Characteristic):
 
 
 class Control2_Characteristic(Characteristic):
-    uuid = "322e774f-c909-49c4-bd7b-48a4003a967f"
+    uuid = "22222222-c909-49c4-bd7b-48a4003a967f"
     description = b"Get/set boiler power state can be `on` or `off`"
 
     def __init__(self, bus, index, service):
@@ -191,7 +191,7 @@ class Control2_Characteristic(Characteristic):
 
 
 class Control3_Characteristic(Characteristic):
-    uuid = "9c7dbce8-de5f-4168-89dd-74f04f4e5842"
+    uuid = "33333333-de5f-4168-89dd-74f04f4e5842"
     description = b"Get/set for Control2 characteristic"
 
     def __init__(self, bus, index, service):
