@@ -84,13 +84,13 @@ def register_app_error_cb(error):
     mainloop.quit()
 
 
-class VivaldiS1Service(Service):
+class Ex1_S1Service(Service):
     """
     Dummy test service that provides characteristics and descriptors that
     exercise various API functionality.
     """
 
-    ESPRESSO_SVC_UUID = "12634d89-d598-4874-8e86-7d042ee07ba7"
+    ESPRESSO_SVC_UUID = "11111111-2222-3333-4444-555555555555"
 
     def __init__(self, bus, index):
         Service.__init__(self, bus, index, self.ESPRESSO_SVC_UUID, True)
@@ -252,15 +252,15 @@ class CharacteristicUserDescriptionDescriptor(Descriptor):
         self.value = value
 
 
-class VivaldiAdvertisement(Advertisement):
+class Ex1_Advertisement(Advertisement):
     def __init__(self, bus, index):
         Advertisement.__init__(self, bus, index, "peripheral")
         self.add_manufacturer_data(
-            0xFFFF, [0x70, 0x74],
+            0xFFFF, [0x57, 0x57],
         )
-        self.add_service_uuid(VivaldiS1Service.ESPRESSO_SVC_UUID)
+        self.add_service_uuid(Ex1_S1Service.ESPRESSO_SVC_UUID)
 
-        self.add_local_name("Vivaldi")
+        self.add_local_name("NeoNeoNeo")
         self.include_tx_power = True
 
 
@@ -301,13 +301,13 @@ def main():
     service_manager = dbus.Interface(adapter_obj, GATT_MANAGER_IFACE)
     ad_manager = dbus.Interface(adapter_obj, LE_ADVERTISING_MANAGER_IFACE)
 
-    advertisement = VivaldiAdvertisement(bus, 0)
+    advertisement = Ex1_Advertisement(bus, 0)
     obj = bus.get_object(BLUEZ_SERVICE_NAME, "/org/bluez")
 
     agent = Agent(bus, AGENT_PATH)
 
     app = Application(bus)
-    app.add_service(VivaldiS1Service(bus, 2))
+    app.add_service(Ex1_S1Service(bus, 2))
 
     mainloop = MainLoop()
 
