@@ -21,12 +21,14 @@ readline (command line clients)
 
 On debian based systems, this can be done by running the following command:
 Enable debian source code by uncommenting deb-src in /etc/apt/sources.list and update source.list
+```
 sudo apt-get update
 sudo apt-get build-dep bluez
-
+```
 To configure run:
+```
 ./configure
-
+```
 To compile and install run:
-make
-sudo make install
+```make
+sudo make install```
